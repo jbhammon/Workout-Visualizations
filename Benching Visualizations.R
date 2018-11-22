@@ -38,6 +38,10 @@ benchReps$percentile = as.factor(benchReps$percentile)
 
 myPlot <- ggplot(data=benchReps, aes(x=Week, y=x, group=percentile)) + geom_line(aes(color = percentile)) + geom_point(aes(color = percentile)) + theme_minimal()  + theme(legend.position="bottom")
 
-myPlot <- myPlot + ggtitle("Trending My Total Weight Benched by Workout") + xlab("Date") + ylab("Total Weight Benched that Day")
+myPlot <- myPlot + ggtitle("Tracking my Bench Press Progress") + xlab("Week Number") + ylab("Pounds Benched")
+
+myPlot <- myPlot + scale_x_discrete(limits=c(seq(1:max(benchReps$Week))))
+
+myPlot <- myPlot + scale_color_hue(labels = c("70%", "75%", "80%")) 
 
 myPlot
