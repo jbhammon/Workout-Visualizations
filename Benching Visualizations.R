@@ -1,4 +1,4 @@
-workoutExport <- read.csv("~/Fitness/Portfolio Project/Workout-Visualizations/FitNotes_Export_2018_11_21_12_37_10.csv")
+workoutExport <- read.csv("~/Fitness/Portfolio Project/Workout-Visualizations/FitNotes_Export_Latest.csv")
 library(ggplot2)
 
 benchReps = workoutExport[workoutExport$Exercise == "Flat Barbell Bench Press",c(1,4,5)]
