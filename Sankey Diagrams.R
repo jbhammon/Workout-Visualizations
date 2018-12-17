@@ -45,10 +45,11 @@ nodes = nodesBuilder(data2018, nodes, "Triceps")
 links = as.data.frame(matrix(c(totalVolume$fromID, totalVolume$toID, totalVolume$x), ncol = 3))
 
 names(links) = c("source", "target", "value")
-sankeyNetwork(Links = links, Nodes = nodes,
+myNetwork = sankeyNetwork(Links = links, Nodes = nodes,
               Source = "source", Target = "target",
               Value = "value", NodeID = "name",
               fontSize= 12, nodeWidth = 30)
+saveNetwork(myNetwork, file = 'SankeyDiagram.html')
 
 ###############################################################
 ## This Stuff Works
