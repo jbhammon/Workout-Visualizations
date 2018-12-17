@@ -1,5 +1,13 @@
 ## Functions
-# totalDataDF need to be instantiated DFs when this is called
+
+# This function takes the total data being manipulated and next category to be pulled out and
+# summarized, and returns the summarized data and the appropriate toID/fromID values to let it
+# be included in the Sankey Diagram. It's then expected the df that's returned will be tacked onto
+# the other categories that have been summarized with rbind()
+
+# totalDataDF - df for which all the data is being plotted, in this case it's all the data from 2018
+# nextIndexID - the next index value to use for new ribbons being added to the Sankey Diagram
+# muscle      - string for the next muscle or body area being summarized and returned
 volumeBuilder <- function(totalDataDF, nextIndexID, muscle) {
   
   totalDataDF = totalDataDF[totalDataDF$Category == muscle,]
@@ -12,6 +20,12 @@ volumeBuilder <- function(totalDataDF, nextIndexID, muscle) {
   return(newData)
 }
 
+# This function pulls out the actual text of the exercise names to be added to the
+# nodes df, so that they can be displayed in the Sankey diagram
+
+# totalDataDF - df for which all the data is being plotted, in this case it's all the data from 2018
+# nodes       - df that's holding all the names indexed so far
+# muscle      - string for the next muscle or body area being summarized and returned
 nodesBuilder <- function(totalDataDF, nodes, muscle) {
   
   totalDataDF = totalDataDF[totalDataDF$Category == muscle,]
@@ -22,26 +36,27 @@ nodesBuilder <- function(totalDataDF, nodes, muscle) {
   
 }
 
-## Read in Data
-fitnessData<- read.csv("~/Fitness/Portfolio Project/Workout-Visualizations/FitNotes_Export_Latest.csv")
 library(networkD3)
 
+## Read in and prep the data
+fitnessData<- read.csv("~/Fitness/Portfolio Project/Workout-Visualizations/FitNotes_Export_Latest.csv")
 fitnessData$Date = as.Date(fitnessData$Date, format = "%m/%d/%Y")
-
 data2018 = fitnessData[fitnessData$Date > "2017-12-31",]
 
+# Initialize DFs to hold data as categories are added
 totalVolume = data.frame(Exercise = factor(), x = numeric(), Category = character(), fromID = integer(), toID = numeric())
-totalVolume = rbind(totalVolume, volumeBuilder(data2018, 0, "Biceps"))
-##
-totalVolume = rbind(totalVolume, volumeBuilder(data2018, max(totalVolume$toID)+1, "Triceps"))
-##
-
 nodes = data.frame(name = factor())
-nodes = nodesBuilder(data2018, nodes, "Biceps")
-##
-nodes = nodesBuilder(data2018, nodes, "Triceps")
-##
 
+# Adding data for each category
+totalVolume = rbind(totalVolume, volumeBuilder(data2018, 0, "Biceps"))
+totalVolume = rbind(totalVolume, volumeBuilder(data2018, max(totalVolume$toID)+1, "Triceps"))
+
+# Add names for each category
+nodes = nodesBuilder(data2018, nodes, "Biceps")
+nodes = nodesBuilder(data2018, nodes, "Triceps")
+
+###############################################################
+## Creating and saving the Sankey Diagram
 links = as.data.frame(matrix(c(totalVolume$fromID, totalVolume$toID, totalVolume$x), ncol = 3))
 
 names(links) = c("source", "target", "value")
@@ -50,6 +65,7 @@ myNetwork = sankeyNetwork(Links = links, Nodes = nodes,
               Value = "value", NodeID = "name",
               fontSize= 12, nodeWidth = 30)
 saveNetwork(myNetwork, file = 'SankeyDiagram.html')
+###############################################################
 
 ###############################################################
 ## This Stuff Works
