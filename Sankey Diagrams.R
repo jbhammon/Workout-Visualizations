@@ -1,3 +1,28 @@
+## Functions
+# totalDataDF need to be instantiated DFs when this is called
+volumeBuilder <- function(totalDataDF, nextIndexID, muscle) {
+  
+  totalDataDF = totalDataDF[totalDataDF$Category == muscle,]
+  newData = data.frame(aggregate(totalDataDF$Weight..lbs., by = list(Exercise = totalDataDF$Exercise), FUN = sum))
+  
+  newData$Category = muscle
+  newData$fromID = nextIndexID:(nrow(newData)-1)
+  newData$toID = max(newData$fromID) + 1
+  
+  return(newData)
+}
+
+nodesBuilder <- function(totalDataDF, nodes, muscle) {
+  
+  totalDataDF = totalDataDF[totalDataDF$Category == muscle,]
+  newData = data.frame(aggregate(totalDataDF$Weight..lbs., by = list(Exercise = totalDataDF$Exercise), FUN = sum))
+  
+  nodes = rbind(data.frame("name" = newData$Exercise), data.frame("name" = muscle))
+  return(nodes)
+  
+}
+
+## Read in Data
 fitnessData<- read.csv("~/Fitness/Portfolio Project/Workout-Visualizations/FitNotes_Export_Latest.csv")
 library(networkD3)
 
@@ -6,13 +31,11 @@ fitnessData
 
 data2018 = fitnessData[fitnessData$Date > "2017-12-31",]
 
-nextCategory = data2018[data2018$Category == "Biceps",]
-totalVolume = data.frame(aggregate(nextCategory$Weight..lbs., by = list(Exercise = nextCategory$Exercise), FUN = sum))
+totalVolume = data.frame(Exercise = factor(), x = numeric(), Category = character(), fromID = integer(), toID = numeric())
+totalVolume = rbind(totalVolume, volumeBuilder(data2018, 0, "Biceps"))
 
-totalVolume$fromID = 0:(nrow(totalVolume)-1)
-totalVolume$toID = max(totalVolume$fromID) + 1
-
-nodes = rbind(data.frame("name" = totalVolume$Exercise), data.frame("name" = "Biceps"))
+nodes = data.frame(name = factor())
+nodes = nodesBuilder(data2018, nodes, "Biceps")
 
 links = as.data.frame(matrix(c(totalVolume$fromID, totalVolume$toID, totalVolume$x), ncol = 3))
 
