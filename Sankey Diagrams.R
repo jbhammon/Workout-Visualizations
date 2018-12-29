@@ -43,6 +43,10 @@ fitnessData<- read.csv("~/Fitness/Portfolio Project/Workout-Visualizations/FitNo
 fitnessData$Date = as.Date(fitnessData$Date, format = "%m/%d/%Y")
 data2018 = fitnessData[fitnessData$Date > "2017-12-31",]
 
+# Create column for reps * weight
+# Sum up that new column for each exercise
+# Pare down to Exercise, Category, and Sum
+
 # Initialize DFs to hold data as categories are added
 totalVolume = data.frame(Exercise = factor(), x = numeric(), Category = character(), fromID = integer(), toID = numeric())
 nodes = data.frame(name = factor())
@@ -64,7 +68,7 @@ myNetwork = sankeyNetwork(Links = links, Nodes = nodes,
               Source = "source", Target = "target",
               Value = "value", NodeID = "name",
               fontSize= 12, nodeWidth = 30)
-saveNetwork(myNetwork, file = 'SankeyDiagram.html')
+saveNetwork(myNetwork, file = 'SankeyDiagram.html', selfcontained = FALSE)
 ###############################################################
 
 ###############################################################
