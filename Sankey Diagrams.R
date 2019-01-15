@@ -44,6 +44,18 @@ fitnessData$Date = as.Date(fitnessData$Date, format = "%m/%d/%Y")
 data2018 = fitnessData[fitnessData$Date > "2017-12-31",]
 data2018 = data2018[data2018$Weight..lbs. > 0,]
 
+# Adding extra indexes
+data2018$tier2 <- -1
+data2018$tier3 <- -1
+
+data2018$tier2[data2018$Category == "Biceps"] = 38
+data2018$tier2[data2018$Category == "Triceps"] = 38
+data2018$tier2[data2018$Category == "Shoulders"] = 38
+
+data2018$tier3[data2018$Category == "Back"] = 39
+data2018$tier3[data2018$Category == "Chest"] = 39
+data2018$tier3[data2018$tier2 == 38] = 39
+
 # Create column for reps * weight
 # Sum up that new column for each exercise
 # Pare down to Exercise, Category, and Sum
@@ -61,6 +73,29 @@ totalVolume = rbind(totalVolume, volumeBuilder(data2018, max(totalVolume$toID)+1
 totalVolume = rbind(totalVolume, volumeBuilder(data2018, max(totalVolume$toID)+1, "Back"))
 totalVolume = rbind(totalVolume, volumeBuilder(data2018, max(totalVolume$toID)+1, "Chest"))
 totalVolume = rbind(totalVolume, volumeBuilder(data2018, max(totalVolume$toID)+1, "Legs"))
+
+
+# biceps -> arms, 6->38
+# volumeBuilder <- function(totalDataDF, nextIndexID, muscle) {
+#   
+#   totalDataDF = totalDataDF[totalDataDF$Category == muscle,]
+#   newData = data.frame(aggregate(totalDataDF$Weight..lbs., by = list(Exercise = totalDataDF$Exercise), FUN = sum))
+#   
+#   newData$Category = muscle
+#   newData$fromID = nextIndexID:(nrow(newData) - 1 + nextIndexID)
+#   newData$toID = max(newData$fromID) + 1
+#   
+#   return(newData)
+# }
+nextCat = data2018[]
+
+# triceps -> arms, 12->38
+# shoulders -> arms, 16->38
+# arms -> upper body, 38->39
+# back -> upper body, 23->39
+# chest -> upper body, 29->39
+# upper body -> total, 39->40
+# legs -> total, 37->40
 
 # Add names for each category
 nodes = nodesBuilder(data2018, nodes, "Biceps")
