@@ -42,6 +42,7 @@ library(networkD3)
 fitnessData<- read.csv("~/Fitness/Portfolio Project/Workout-Visualizations/FitNotes_Export_Latest.csv")
 fitnessData$Date = as.Date(fitnessData$Date, format = "%m/%d/%Y")
 data2018 = fitnessData[fitnessData$Date > "2017-12-31",]
+data2018 = data2018[data2018$Weight..lbs. > 0,]
 
 # Create column for reps * weight
 # Sum up that new column for each exercise
@@ -51,13 +52,23 @@ data2018 = fitnessData[fitnessData$Date > "2017-12-31",]
 totalVolume = data.frame(Exercise = factor(), x = numeric(), Category = character(), fromID = integer(), toID = numeric())
 nodes = data.frame(name = factor())
 
+#indexReference = matrix(c(0, "biceps", 1, "triceps", 2, "shoulders", 3, "back", 4, "chest", 5, "abs", 6, "quads", 7, "calfs", 8, "arms", 9, "legs", 10, "upper body", 11, "total"), byrow=TRUE, ncol=2)
+
 # Adding data for each category
 totalVolume = rbind(totalVolume, volumeBuilder(data2018, 0, "Biceps"))
 totalVolume = rbind(totalVolume, volumeBuilder(data2018, max(totalVolume$toID)+1, "Triceps"))
+totalVolume = rbind(totalVolume, volumeBuilder(data2018, max(totalVolume$toID)+1, "Shoulders"))
+totalVolume = rbind(totalVolume, volumeBuilder(data2018, max(totalVolume$toID)+1, "Back"))
+totalVolume = rbind(totalVolume, volumeBuilder(data2018, max(totalVolume$toID)+1, "Chest"))
+totalVolume = rbind(totalVolume, volumeBuilder(data2018, max(totalVolume$toID)+1, "Legs"))
 
 # Add names for each category
 nodes = nodesBuilder(data2018, nodes, "Biceps")
 nodes = nodesBuilder(data2018, nodes, "Triceps")
+nodes = nodesBuilder(data2018, nodes, "Shoulders")
+nodes = nodesBuilder(data2018, nodes, "Back")
+nodes = nodesBuilder(data2018, nodes, "Chest")
+nodes = nodesBuilder(data2018, nodes, "Legs")
 
 ###############################################################
 ## Creating and saving the Sankey Diagram
