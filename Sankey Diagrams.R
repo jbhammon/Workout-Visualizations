@@ -82,19 +82,66 @@ totalVolume$toID = as.numeric(totalVolume$toID)
 # biceps -> arms, 6->38
 nextCat = sum(totalVolume$x[totalVolume$Category == "Biceps"])
 totalVolume = rbind(totalVolume, c("Biceps", as.numeric(nextCat), "Arms", 5, 37))
-
 totalVolume$Exercise = as.character(totalVolume$Exercise)
 totalVolume$x = as.numeric(totalVolume$x)
 totalVolume$fromID = as.numeric(totalVolume$fromID)
 totalVolume$toID = as.numeric(totalVolume$toID)
 
 # triceps -> arms, 12->38
+nextCat = sum(totalVolume$x[totalVolume$Category == "Triceps"])
+totalVolume = rbind(totalVolume, c("Triceps", as.numeric(nextCat), "Arms", 11, 37))
+totalVolume$Exercise = as.character(totalVolume$Exercise)
+totalVolume$x = as.numeric(totalVolume$x)
+totalVolume$fromID = as.numeric(totalVolume$fromID)
+totalVolume$toID = as.numeric(totalVolume$toID)
+
 # shoulders -> arms, 16->38
+nextCat = sum(totalVolume$x[totalVolume$Category == "Shoulders"])
+totalVolume = rbind(totalVolume, c("Shoulders", as.numeric(nextCat), "Arms", 15, 37))
+totalVolume$Exercise = as.character(totalVolume$Exercise)
+totalVolume$x = as.numeric(totalVolume$x)
+totalVolume$fromID = as.numeric(totalVolume$fromID)
+totalVolume$toID = as.numeric(totalVolume$toID)
+
 # arms -> upper body, 38->39
+nextCat = sum(totalVolume$x[totalVolume$Category == "Arms"])
+totalVolume = rbind(totalVolume, c("Arms", as.numeric(nextCat), "Upper Body", 37, 38))
+totalVolume$Exercise = as.character(totalVolume$Exercise)
+totalVolume$x = as.numeric(totalVolume$x)
+totalVolume$fromID = as.numeric(totalVolume$fromID)
+totalVolume$toID = as.numeric(totalVolume$toID)
+
 # back -> upper body, 23->39
+nextCat = sum(totalVolume$x[totalVolume$Category == "Back"])
+totalVolume = rbind(totalVolume, c("Back", as.numeric(nextCat), "Upper Body", 22, 38))
+totalVolume$Exercise = as.character(totalVolume$Exercise)
+totalVolume$x = as.numeric(totalVolume$x)
+totalVolume$fromID = as.numeric(totalVolume$fromID)
+totalVolume$toID = as.numeric(totalVolume$toID)
+
 # chest -> upper body, 29->39
+nextCat = sum(totalVolume$x[totalVolume$Category == "Chest"])
+totalVolume = rbind(totalVolume, c("Chest", as.numeric(nextCat), "Upper Body", 28, 38))
+totalVolume$Exercise = as.character(totalVolume$Exercise)
+totalVolume$x = as.numeric(totalVolume$x)
+totalVolume$fromID = as.numeric(totalVolume$fromID)
+totalVolume$toID = as.numeric(totalVolume$toID)
+
 # upper body -> total, 39->40
+nextCat = sum(totalVolume$x[totalVolume$Category == "Upper Body"])
+totalVolume = rbind(totalVolume, c("Upper Body", as.numeric(nextCat), "Total", 38, 39))
+totalVolume$Exercise = as.character(totalVolume$Exercise)
+totalVolume$x = as.numeric(totalVolume$x)
+totalVolume$fromID = as.numeric(totalVolume$fromID)
+totalVolume$toID = as.numeric(totalVolume$toID)
+
 # legs -> total, 37->40
+nextCat = sum(totalVolume$x[totalVolume$Category == "Legs"])
+totalVolume = rbind(totalVolume, c("Legs", as.numeric(nextCat), "Total", 36, 39))
+totalVolume$Exercise = as.character(totalVolume$Exercise)
+totalVolume$x = as.numeric(totalVolume$x)
+totalVolume$fromID = as.numeric(totalVolume$fromID)
+totalVolume$toID = as.numeric(totalVolume$toID)
 
 # Add names for each category
 nodes = nodesBuilder(data2018, nodes, "Biceps")
@@ -107,6 +154,8 @@ nodes = nodesBuilder(data2018, nodes, "Legs")
 nodes$name = as.character(nodes$name)
 
 nodes = rbind(nodes, "Arms")
+nodes = rbind(nodes, "Upper Body")
+nodes = rbind(nodes, "Total")
 nodes$name = as.factor(nodes$name)
 
 ###############################################################
