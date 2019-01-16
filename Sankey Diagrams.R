@@ -73,20 +73,20 @@ totalVolume = rbind(totalVolume, volumeBuilder(data2018, max(totalVolume$toID)+1
 totalVolume = rbind(totalVolume, volumeBuilder(data2018, max(totalVolume$toID)+1, "Chest"))
 totalVolume = rbind(totalVolume, volumeBuilder(data2018, max(totalVolume$toID)+1, "Legs"))
 
-# totalVolume$Exercise = as.character(totalVolume$Exercise)
-# totalVolume$x = as.numeric(totalVolume$x)
-# totalVolume$fromID = as.numeric(totalVolume$fromID)
-# totalVolume$toID = as.numeric(totalVolume$toID)
-# 
-# 
-# # biceps -> arms, 6->38
-# nextCat = sum(totalVolume$x[totalVolume$Category == "Biceps"])
-# totalVolume = rbind(totalVolume, c("Biceps", as.numeric(nextCat), "Arms", 5, 37))
-# 
-# totalVolume$Exercise = as.character(totalVolume$Exercise)
-# totalVolume$x = as.numeric(totalVolume$x)
-# totalVolume$fromID = as.numeric(totalVolume$fromID)
-# totalVolume$toID = as.numeric(totalVolume$toID)
+totalVolume$Exercise = as.character(totalVolume$Exercise)
+totalVolume$x = as.numeric(totalVolume$x)
+totalVolume$fromID = as.numeric(totalVolume$fromID)
+totalVolume$toID = as.numeric(totalVolume$toID)
+
+
+# biceps -> arms, 6->38
+nextCat = sum(totalVolume$x[totalVolume$Category == "Biceps"])
+totalVolume = rbind(totalVolume, c("Biceps", as.numeric(nextCat), "Arms", 5, 37))
+
+totalVolume$Exercise = as.character(totalVolume$Exercise)
+totalVolume$x = as.numeric(totalVolume$x)
+totalVolume$fromID = as.numeric(totalVolume$fromID)
+totalVolume$toID = as.numeric(totalVolume$toID)
 
 # triceps -> arms, 12->38
 # shoulders -> arms, 16->38
@@ -103,11 +103,11 @@ nodes = nodesBuilder(data2018, nodes, "Shoulders")
 nodes = nodesBuilder(data2018, nodes, "Back")
 nodes = nodesBuilder(data2018, nodes, "Chest")
 nodes = nodesBuilder(data2018, nodes, "Legs")
-# 
-# nodes$name = as.character(nodes$name)
-# 
-# nodes = rbind(nodes, "Arms")
-# nodes$name = as.factor(nodes$name)
+
+nodes$name = as.character(nodes$name)
+
+nodes = rbind(nodes, "Arms")
+nodes$name = as.factor(nodes$name)
 
 ###############################################################
 ## Creating and saving the Sankey Diagram
