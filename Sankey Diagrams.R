@@ -48,13 +48,13 @@ data2018 = data2018[data2018$Weight..lbs. > 0,]
 data2018$tier2 <- -1
 data2018$tier3 <- -1
 
-data2018$tier2[data2018$Category == "Biceps"] = 38
-data2018$tier2[data2018$Category == "Triceps"] = 38
-data2018$tier2[data2018$Category == "Shoulders"] = 38
+data2018$tier2[data2018$Category == "Biceps"] = 37
+data2018$tier2[data2018$Category == "Triceps"] = 37
+data2018$tier2[data2018$Category == "Shoulders"] = 37
 
-data2018$tier3[data2018$Category == "Back"] = 39
-data2018$tier3[data2018$Category == "Chest"] = 39
-data2018$tier3[data2018$tier2 == 38] = 39
+data2018$tier3[data2018$Category == "Back"] = 38
+data2018$tier3[data2018$Category == "Chest"] = 38
+data2018$tier3[data2018$tier2 == 37] = 38
 
 # Create column for reps * weight
 # Sum up that new column for each exercise
@@ -64,7 +64,6 @@ data2018$tier3[data2018$tier2 == 38] = 39
 totalVolume = data.frame(Exercise = factor(), x = numeric(), Category = character(), fromID = integer(), toID = numeric())
 nodes = data.frame(name = factor())
 
-#indexReference = matrix(c(0, "biceps", 1, "triceps", 2, "shoulders", 3, "back", 4, "chest", 5, "abs", 6, "quads", 7, "calfs", 8, "arms", 9, "legs", 10, "upper body", 11, "total"), byrow=TRUE, ncol=2)
 
 # Adding data for each category
 totalVolume = rbind(totalVolume, volumeBuilder(data2018, 0, "Biceps"))
@@ -74,20 +73,20 @@ totalVolume = rbind(totalVolume, volumeBuilder(data2018, max(totalVolume$toID)+1
 totalVolume = rbind(totalVolume, volumeBuilder(data2018, max(totalVolume$toID)+1, "Chest"))
 totalVolume = rbind(totalVolume, volumeBuilder(data2018, max(totalVolume$toID)+1, "Legs"))
 
-
-# biceps -> arms, 6->38
-# volumeBuilder <- function(totalDataDF, nextIndexID, muscle) {
-#   
-#   totalDataDF = totalDataDF[totalDataDF$Category == muscle,]
-#   newData = data.frame(aggregate(totalDataDF$Weight..lbs., by = list(Exercise = totalDataDF$Exercise), FUN = sum))
-#   
-#   newData$Category = muscle
-#   newData$fromID = nextIndexID:(nrow(newData) - 1 + nextIndexID)
-#   newData$toID = max(newData$fromID) + 1
-#   
-#   return(newData)
-# }
-nextCat = data2018[]
+# totalVolume$Exercise = as.character(totalVolume$Exercise)
+# totalVolume$x = as.numeric(totalVolume$x)
+# totalVolume$fromID = as.numeric(totalVolume$fromID)
+# totalVolume$toID = as.numeric(totalVolume$toID)
+# 
+# 
+# # biceps -> arms, 6->38
+# nextCat = sum(totalVolume$x[totalVolume$Category == "Biceps"])
+# totalVolume = rbind(totalVolume, c("Biceps", as.numeric(nextCat), "Arms", 5, 37))
+# 
+# totalVolume$Exercise = as.character(totalVolume$Exercise)
+# totalVolume$x = as.numeric(totalVolume$x)
+# totalVolume$fromID = as.numeric(totalVolume$fromID)
+# totalVolume$toID = as.numeric(totalVolume$toID)
 
 # triceps -> arms, 12->38
 # shoulders -> arms, 16->38
@@ -104,6 +103,11 @@ nodes = nodesBuilder(data2018, nodes, "Shoulders")
 nodes = nodesBuilder(data2018, nodes, "Back")
 nodes = nodesBuilder(data2018, nodes, "Chest")
 nodes = nodesBuilder(data2018, nodes, "Legs")
+# 
+# nodes$name = as.character(nodes$name)
+# 
+# nodes = rbind(nodes, "Arms")
+# nodes$name = as.factor(nodes$name)
 
 ###############################################################
 ## Creating and saving the Sankey Diagram
